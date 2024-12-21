@@ -33,7 +33,6 @@ func (b *Builder) BuildQuery(ctx context.Context, mint, maxt time.Time, matchers
 		return "", fmt.Errorf("unsupported metric type: %s", metricType)
 	}
 
-	// Start building the query
 	queryParts := []string{
 		"SELECT TimeUnix as timestamp,",
 	}

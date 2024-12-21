@@ -199,3 +199,61 @@ func TestMetricsClient_QuerySummary(t *testing.T) {
 	mockConn.AssertExpectations(t)
 	mockRows.AssertExpectations(t)
 }
+
+func TestClickhouseRows_Next(t *testing.T) {
+	mockRows := new(MockRows)
+	mockRows.On("Next").Return(true)
+
+	rows := &clickhouseRows{rows: mockRows}
+	assert.True(t, rows.Next())
+
+	mockRows.AssertExpectations(t)
+}
+
+func TestClickhouseRows_Scan(t *testing.T) {
+	mockRows := new(MockRows)
+	mockRows.On("Scan", mock.Anything).Return(nil)
+
+	rows := &clickhouseRows{rows: mockRows}
+	err := rows.Scan("test")
+	assert.NoError(t, err)
+
+	mockRows.AssertExpectations(t)
+}
+
+func TestClickhouseRows_Close(t *testing.T) {
+	mockRows := new(MockRows)
+	mockRows.On("Close").Return(nil)
+
+	rows := &clickhouseRows{rows: mockRows}
+	err := rows.Close()
+	assert.NoError(t, err)
+
+	mockRows.AssertExpectations(t)
+}
+
+func TestClickhouseRows_Columns(t *testing.T) {
+	mockRows := new(MockRows)
+	expectedColumns := []string{"col1", "col2"}
+	mockRows.On("Columns").Return(expectedColumns, nil)
+
+	rows := &clickhouseRows{rows: mockRows}
+	columns, err := rows.Columns()
+	assert.NoError(t, err)
+	assert.Equal(t, expectedColumns, columns)
+
+	mockRows.AssertExpectations(t)
+}
+
+func TestClickhouseRows_ColumnTypes(t *testing.T) {
+	mockRows := new(MockRows)
+	expectedColumnTypes := []driver.ColumnType{}
+	mockRows.On("ColumnTypes").Return(expectedColumnTypes, nil)
+
+	rows := &clickhouseRows{rows: mockRows}
+	columnTypes, err := rows.ColumnTypes()
+	assert.NoError(t, err)
+	assert.Equal(t, expectedColumnTypes, columnTypes)
+
+	mockRows.AssertExpectations(t)
+}
