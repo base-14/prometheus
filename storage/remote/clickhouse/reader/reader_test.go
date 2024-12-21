@@ -118,9 +118,25 @@ func TestInferMetricType(t *testing.T) {
 			labels:     map[string]string{},
 			expected:   model.MetricTypeGauge,
 		}, {
-			query:      "sum(rate(node_network_receive_bytes_total{cluster=\"demo-acc-cluster\", job=\"integrations/node_exporter\"}[$__rate_interval])) by (instance)",
+			query:      "sum(rate(node_network_receive_bytes_total{cluster=\"demo-cluster\", job=\"integrations\"}[$__rate_interval])) by (instance)",
 			metricName: "chi_clickhouse_metric_DiskDataBytes",
 			labels:     map[string]string{},
+			expected:   model.MetricTypeGauge,
+		},
+		{
+			query:      "sum(kube_pod_status_reason{cluster=\"demo-cluster\"}) by (reason)",
+			metricName: "kube_pod_status_reason",
+			labels:     map[string]string{"cluster": "demo-acc-cluster"},
+			expected:   model.MetricTypeGauge,
+		}, {
+			query:      "sum(irate(otel_demo_revenue_usd{country=~\".*\", state=~\".*\", city=~\".*\", user_id=\"default_user\"}[5m]))",
+			metricName: "otel_demo_revenue_usd",
+			labels:     map[string]string{"cluster": "demo-acc-cluster"},
+			expected:   model.MetricTypeGauge,
+		}, {
+			query:      "avg(rate(request_latency_p99{region=~\".*\", node=~\".*\", pod=~\".*\", container=~\".*\", source_service=~\".*\", target_service=~\".*\"}[5m]))",
+			metricName: "request_latency_p99",
+			labels:     map[string]string{"cluster": "demo-acc-cluster"},
 			expected:   model.MetricTypeGauge,
 		},
 	}

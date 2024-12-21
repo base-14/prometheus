@@ -96,7 +96,6 @@ func getMetricType(pQuery *prompb.Query) model.MetricType {
 // count_over_time(): While applicable to any time series, it's often used with counters to count events over a time window.
 // deriv(): This function calculates the per-second derivative of a time series. It can be applied to gauges, but it's less commonly used on counters.
 // 3. Label Analysis:
-//
 // le label (in histograms): The presence of the le (less than or equal to) label is a definitive sign of a histogram's buckets.
 // 4. Combining Clues:
 //
